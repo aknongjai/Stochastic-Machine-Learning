@@ -1,0 +1,82 @@
+import java.util.Scanner;
+import static java.lang.Math.pow;
+class data{
+    public Scanner s=new Scanner(System.in);
+    public double livArea,noBed,price;
+    public void getVal(){
+        System.out.println("Enter the Living area in square feet, no. of bedrooms and price in lacs respectively");
+        livArea=s.nextDouble();
+        noBed=s.nextDouble();
+        price=s.nextDouble();
+    }
+}
+public class Stochastic {
+    static final double desiredError=0.01;
+    static double weight[]=new double[10];//The weights "theta or w"
+    static double hypothesis[]=new double[100];//The hypothesis values
+    static double cost;//The cost function values
+    static int m=5;//number of training examples
+    static final double learnRate=0.0000001;
+    static boolean flag=true;
+    static int fff=999;
+    static void initialiseDataArray(data ex[]){
+        for (int i=0;i<m;i++){
+            ex[i]=new data();
+        }
+    }
+    public static void getData(data ex[]){
+        for(int i=0;i<m;i++){
+            ex[i].getVal();
+        }
+    }
+    public static void show(data ex[]){
+        for (int i=0;i<m;i++){
+            System.out.println("Living Area "+ex[i].livArea+" number of bed "+ex[i].noBed+" price "+ex[i].price);
+        }
+    }
+    static void getWt(){
+        weight[0]=0.01;weight[1]=0.009;weight[2]=0.03;
+    }
+    static void calHypothesis(data ex[]){
+        double ddd=0.5;
+        hypothesis[0] = (weight[0] + (weight[1] * ex[0].livArea) + (weight[2] * ex[0].noBed));
+        cost=(ddd*(pow(((ex[0].price)-hypothesis[0]),2)));
+        System.out.println("cost "+cost);
+        while (desiredError>=cost){
+        for (int i=0;i<m;i++) {
+            if (desiredError >= cost) {
+                fff=123;
+                System.out.println("done");
+                for (int qw = 0; qw < 3; qw++) {
+                    System.out.println("weights " + weight[qw]);
+                }
+                break;
+            }
+            else{
+                hypothesis[i] = (weight[0] + (weight[1] * ex[i].livArea) + (weight[2] * ex[i].noBed));
+                cost=(ddd*(pow(((ex[i].price)-hypothesis[i]),2)));
+                weight[0]=(weight[0]+(learnRate*(ex[i].price-hypothesis[i])));
+                weight[1]=(weight[1]+(learnRate*(ex[i].price-hypothesis[i])*(ex[i].livArea)));
+                weight[2]=(weight[2]+(learnRate*(ex[i].price-hypothesis[i])*(ex[i].noBed)));
+            }
+        }
+        if(fff==123){
+            break;
+        }
+        }
+        for (int i=0;i<m;i++){
+            System.out.println("hypothesis["+i+"] is "+ hypothesis[i]);
+        }//printing the hypothesis values
+    }
+    public static void main(String []args){
+        data[] d=new data[10];
+        initialiseDataArray(d);
+        getData(d);
+        getWt();
+        calHypothesis(d);
+    }
+}
+/*All Rights Reserved
+Nongjaimayum Annas khan
+Husband of Ph Tabasum Sahani
+*/
